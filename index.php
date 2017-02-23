@@ -50,7 +50,7 @@ $app->post('/', function ($request, $response)
 			if($event['message']['type'] == 'text')
 			{
 				// send same message as reply to user
-				$result = $bot->replyText($event['replyToken'], $event['message']['text']);
+				$result = $bot->replyText($event['replyToken'], print_r($event, 1));
 
 				// or we can use pushMessage() instead to send reply message
 				// $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event['message']['text']);
@@ -63,16 +63,16 @@ $app->post('/', function ($request, $response)
 
 });
 
-// $app->get('/push/{to}/{message}', function ($request, $response, $args)
-// {
-// 	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
-// 	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
+$app->get('/push/{to}/{message}', function ($request, $response, $args)
+{
+	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
+	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
 
-// 	$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($args['message']);
-// 	$result = $bot->pushMessage($args['to'], $textMessageBuilder);
+	$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($args['message']);
+	$result = $bot->pushMessage($args['to'], $textMessageBuilder);
 
-// 	return $result->getHTTPStatus() . ' ' . $result->getRawBody();
-// });
+	return $result->getHTTPStatus() . ' ' . $result->getRawBody();
+});
 
 /* JUST RUN IT */
 $app->run();
