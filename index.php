@@ -47,7 +47,7 @@ $app->post('/', function ($request, $response)
 	{
 		if ($event['type'] == 'message')
 		{
-			if($event['message']['type'] == 'text')
+			if(true || $event['message']['type'] == 'text')
 			{
 				// send same message as reply to user
 				$result = $bot->replyText($event['replyToken'], print_r($event, 1));
