@@ -34,13 +34,13 @@ $app->post('/', function ($request, $response)
 	}
 
 	// is this request comes from LINE?
-	if($_ENV['PASS_SIGNATURE'] == false && ! SignatureValidator::validateSignature($body, $_ENV['CHANNEL_SECRET'], $signature)){
+	if(getenv('PASS_SIGNATURE') == false && ! SignatureValidator::validateSignature($body, getenv('CHANNEL_SECRET'), $signature)){
 		return $response->withStatus(400, 'Invalid signature');
 	}
 
 	// init bot
-	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
-	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
+	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
+	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET')]);
 
 	$data = json_decode($body, true);
 	foreach ($data['events'] as $event)
@@ -65,8 +65,8 @@ $app->post('/', function ($request, $response)
 
 $app->get('/push/{to}/{message}', function ($request, $response, $args)
 {
-	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV['CHANNEL_ACCESS_TOKEN']);
-	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV['CHANNEL_SECRET']]);
+	$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(getenv('CHANNEL_ACCESS_TOKEN'));
+	$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => getenv('CHANNEL_SECRET')]);
 
 	$textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($args['message']);
 	$result = $bot->pushMessage($args['to'], $textMessageBuilder);
