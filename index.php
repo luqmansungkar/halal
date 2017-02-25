@@ -50,7 +50,7 @@ $app->post('/', function ($request, $response)
 	$data = json_decode($body, true);
 	foreach ($data['events'] as $event)
 	{
-		if ($event['type'] == 'message')
+		if (true || $event['type'] == 'message')
 		{
 			if(true || $event['message']['type'] == 'text')
 			{
